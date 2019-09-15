@@ -533,3 +533,93 @@ const c = a.filter(x => x !== 3);
 console.log(b);
 
 console.log(c);
+
+function xyz() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("resolved Promise");
+    }, 1000);
+  });
+}
+
+// es5 syntax
+
+xyz()
+  .then(val => {
+    console.log(val);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
+// es6 syntax
+
+const abc = async () => {
+  try {
+    const data = await xyz();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// async function pqr() {
+
+// }
+abc();
+console.log("abc");
+console.log("pqr");
+
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("resolve P1");
+  }, 1000);
+});
+
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject("reject P2");
+  }, 500);
+});
+
+const AllPromise = async () => {
+  try {
+    const res = await Promise.all([p1, p2]);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const RacePromise = async () => {
+  try {
+    const res = await Promise.race([p1, p2]);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+AllPromise();
+RacePromise();
+
+function* abc() {
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  return "abc";
+}
+
+const gen = abc();
+
+for (const iterator of gen) {
+  console.log(iterator);
+}
+
+// console.log(gen.next())
+// console.log(gen.next())
+// console.log(gen.next())
+// console.log(gen.next())
+// console.log(gen.next())
+// console.log(gen.next())
