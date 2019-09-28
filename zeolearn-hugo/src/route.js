@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { lazy, Suspense} from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
-import Home from './pages/Home'
-import About from './pages/About'
-import Details from './pages/Details'
+// import loadable from '@loadable/component'
+// import Home from './pages/Home'
+// import About from './pages/About'
+// import Details from './pages/Details'
 import NotFound from './pages/NotFound'
+const home = "./pages/Home"
+
+const HomeAsync = lazy(() => import(`${home}`))
+const AboutAsync = lazy(() => import('./pages/About'))
+const DetailsAsync = lazy(() => import('./pages/Details'))
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route 
@@ -30,12 +36,14 @@ const route = () => {
                         </li>
                     </ul>
                 </nav>
-                <Switch>
-                    <Route exact path="/" render={(props) => <Home {...props} name="yagnesh" />}  />
-                    <PrivateRoute path="/about" component={About} authenticated={false} />
-                    <PrivateRoute path="/details" key="abc" component={Details} authenticated={true} />
-                    <Route component={NotFound} />
-                </Switch>
+                <Suspense fallback={<h1>Loading...</h1>}>
+                    <Switch>
+                        <Route exact path="/" render={(props) => <HomeAsync {...props} name="yagnesh" />}  />
+                        <PrivateRoute path="/about" component={AboutAsync} authenticated={true} />
+                        <PrivateRoute path="/details" key="abc" component={DetailsAsync} authenticated={true} />
+                        <Route component={NotFound} />
+                    </Switch>
+                </Suspense>
             </div>
         </Router>
     )
