@@ -1,38 +1,25 @@
-import React, { Component } from 'react'
+import React, {  memo} from 'react'
+import { Consumer } from '../../App'
 
-export default class addTodo extends Component {
-    state = {
-        todo: '',
-        error: '',
-    }
-
-    changeText = (event) => {
-        this.setState({ todo: event.target.value, error: '' })
-    }
-
-    addTodo = (event) => {
-        event.preventDefault()
-        const { todo } = this.state;
-        const { todos, onAddTodo } = this.props;
-        if(todo) {
-            const updatedTodos = [...todos, { id: todos.length + 1 , text: todo, isDone: false }];
-            this.setState({ todo: '' })
-            onAddTodo(updatedTodos)
-        } else {
-            this.setState({ error: 'Please enter your todo'});
-        }
-    }
-
-    render() {
-        const { error, todo } = this.state
-        return (
+const addTodo = ({ addTodo, changeText, value }) => {
+    console.log('addTodo')
+    return (
+        <div>
             <div>
-                {error && <h3 style={{ color: 'red'}}>{error}</h3>}
-                <form onSubmit={this.addTodo}>
-                    <input type="text" value={todo} onChange={this.changeText} required />
-                    <button type="submit">Add Todo</button>
-                </form>
+                <Consumer>
+                    {(props) => <div>
+                        <p>{props.greet}</p>
+                    </div>}
+                </Consumer>
+
             </div>
-        )
-    }
+        
+        <form onSubmit={addTodo}>
+            <input type="text" value={value} onChange={changeText} placeholder="Write your todo Here" required />
+            <button type="submit" >Add Todo</button>
+        </form>
+        </div>
+    )
 }
+
+export default memo(addTodo)

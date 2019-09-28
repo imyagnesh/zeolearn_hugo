@@ -1,16 +1,21 @@
-import React from 'react'
+import React,  { memo } from 'react'
 
-export default ({ todos, toggleTodo, deleteTodo }) => {
+
+const TodoList = ({ todos, toggleTodo, deleteTodo }) => {
+    console.log('Todo List')
     return (
         <div>
             {todos.map((todo, index) => {
                 return <div key={index}>
-                    <input type="checkbox" value={todo.isDone} onChange={() => toggleTodo(todo)} />
+                    <input type="checkbox" value={todo.isDone} onChange={() => toggleTodo(todo, index)} />
                     <span style={{ textDecoration: todo.isDone ? 'line-through' : 'none' }}>{todo.text}</span>
-                    <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+                    <button onClick={() => deleteTodo(index)}>Delete</button>
                 </div>
             })}
+            
         </div>
 )
 }
+
+export default memo(TodoList);
 

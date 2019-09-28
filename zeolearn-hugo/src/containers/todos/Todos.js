@@ -1,16 +1,28 @@
-import React, { Component } from 'react'
+import React, { PureComponent, Fragment } from 'react'
+import AddTodo from './addTodo'
+import TodoList from './todoList';
 
-export default class Todos extends Component {
+export default class Todos extends PureComponent {
     state = {
         todo: '',
         todos: []
     }
 
+   
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if( nextProps !== this.props && nextState !== this.state) {
+    //         return true;
+    //     }
+    //     return false
+    // }
+    
+
     changeText = (event) => {
         this.setState({ todo: event.target.value })
     }
 
-    addTodo = () => {
+    addTodo = (event) => {
+        event.preventDefault()
         this.setState({
             todos: [...this.state.todos, { text: this.state.todo, isDone: false} ],
             todo: ''
@@ -38,33 +50,14 @@ export default class Todos extends Component {
     }
 
     render() {
+        console.log('Todos');
+        const { todo: todoObj, todos } = this.state;
         return (
-            <div>
+            <Fragment>
                 <h1>Hellos</h1>
-                <div>
-                    <input type="text" value={this.state.todo} onChange={this.changeText} placeholder="Write your todo Here" />
-                    <button type="button" onClick={this.addTodo}>Add Todo</button>
-                </div>
-                <div>
-                    {
-                        this.state.todos.map((todo, index) => {
-                            return <div key={index} style={{
-                                flex: 1,
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                padding: 10
-                            }}>
-                                <input type="checkbox" checked={todo.isDone} onChange={() => this.updateTodo(todo, index)} />
-                                <p style={{
-                                    textDecoration: todo.isDone ? 'line-through' : 'none'
-                                }}>{todo.text}</p>
-                                <button type="button" onClick={() => this.deleteTodo(index)}>Delete</button>
-                            </div>
-                        })
-                    }
-                </div>
-            </div>
+                <AddTodo addTodo={this.addTodo} changeText={this.changeText} value={todoObj} />
+                {todos.length > 0 && <TodoList todos={todos} toggleTodo={this.updateTodo} deleteTodo={this.deleteTodo} />}
+            </Fragment>
         )
     }
 }
