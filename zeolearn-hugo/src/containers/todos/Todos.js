@@ -1,64 +1,69 @@
 import React, { Component } from 'react'
-import AddTodo from './addTodo';
-import TodoList from './todoList';
-import FilterTodos from './filterTodos';
-
-
-
 
 export default class Todos extends Component {
     state = {
-        todos: [
-            {
-                id: 2131231,
-                text: 'Get Milk',
-                isDone: false
-            }
-        ],
-        filterStatus: 'all'
+        todo: '',
+        todos: []
     }
 
-    deleteTodo = (id) => {
-        const { todos } = this.state
+    changeText = (event) => {
+        this.setState({ todo: event.target.value })
+    }
+
+    addTodo = () => {
         this.setState({
-            todos: todos.filter(x =>  x.id !== id)
+            todos: [...this.state.todos, { text: this.state.todo, isDone: false} ],
+            todo: ''
         })
     }
 
-    toggleTodo = (todo) => {
-        const { todos } = this.state;
-        const index = todos.findIndex(x => x.id === todo.id);
-        const updatedTodos = [
-            ...todos.slice(0, index),
-            {...todo, isDone: !todo.isDone},
-            ...todos.slice(index + 1)
-        ];
+    deleteTodo = (index) => {
         this.setState({
-            todos: updatedTodos
-        });
+            todos: [
+                ...this.state.todos.slice(0, index),
+                
+                ...this.state.todos.slice(index + 1)
+            ]
+        })
     }
 
-    onFilterTodos = (status) => {
-        this.setState({ filterStatus: status })
+    updateTodo = (todo, index) => {
+        this.setState({
+            todos: [
+                ...this.state.todos.slice(0, index),
+                {...todo, isDone: !todo.isDone},
+                ...this.state.todos.slice(index + 1)
+            ]
+        }) 
     }
 
     render() {
-        const { todos, filterStatus } = this.state;
-        let filterTodos = todos;
-        if(filterStatus === 'pending') {
-            filterTodos = todos.filter(x => !x.isDone)
-        }
-        if(filterStatus === 'completed') {
-            filterTodos = todos.filter(x => x.isDone)
-        }
         return (
             <div>
-                <h1>My Todos</h1>
-                <AddTodo todos={todos} onAddTodo={(todos) => {
-                    this.setState({ todos })
-                }} /> 
-                <TodoList todos={filterTodos} toggleTodo={this.toggleTodo} deleteTodo={this.deleteTodo} />
-                <FilterTodos filterStatus={filterStatus} onFilter={this.onFilterTodos} />
+                <h1>Hellos</h1>
+                <div>
+                    <input type="text" value={this.state.todo} onChange={this.changeText} placeholder="Write your todo Here" />
+                    <button type="button" onClick={this.addTodo}>Add Todo</button>
+                </div>
+                <div>
+                    {
+                        this.state.todos.map((todo, index) => {
+                            return <div key={index} style={{
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                padding: 10
+                            }}>
+                                <input type="checkbox" checked={todo.isDone} onChange={() => this.updateTodo(todo, index)} />
+                                <p style={{
+                                    textDecoration: todo.isDone ? 'line-through' : 'none'
+                                }}>{todo.text}</p>
+                                <button type="button" onClick={() => this.deleteTodo(index)}>Delete</button>
+                            </div>
+                        })
+                    }
+                </div>
             </div>
         )
     }
