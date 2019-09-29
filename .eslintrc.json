@@ -30,6 +30,8 @@
         "extensions": [".js", ".jsx"]
       }
     ],
-    "prettier/prettier": ["error"]
+    "react/no-array-index-key": 0,
+    "react/jsx-props-no-spreading": 0,
+    "prettier/prettier": 2
   }
 }
