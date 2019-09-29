@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import SubRoutes from './components/SubRoutes';
 import Login from './pages/Login';
 import Products from './pages/Products';
@@ -8,7 +8,7 @@ import AdminProducts from './pages/admin/Products';
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     exact: true,
     component: Login,
   },
