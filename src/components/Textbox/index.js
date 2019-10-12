@@ -1,27 +1,22 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ErrorMessage } from 'formik';
 import './style.css';
 
-const Index = ({ label, name, error, ...props }) => {
+const index = ({ field, ...props }) => {
   return (
     <div className="container">
-      {label && <label htmlFor={name}>{label}</label>}
-      <input name={name} className="textbox" type="text" {...props} />
-      {error && <span className="inlineError">{error}</span>}
+      <input className="textbox" type="text" {...field} {...props} />
+      <ErrorMessage name={field.name}>
+        {msg => <div className="inlineError">{msg}</div>}
+      </ErrorMessage>
     </div>
   );
 };
 
-Index.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  error: PropTypes.string,
+index.propTypes = {
+  field: PropTypes.object.isRequired,
 };
 
-Index.defaultProps = {
-  label: '',
-  error: ''
-};
-
-export default Index;
+export default index;

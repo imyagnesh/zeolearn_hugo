@@ -1,42 +1,79 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { PureComponent } from 'react';
-import Textbox from '../components/Textbox/index';
-import Button from '../components/Button/index';
+import Textbox from '../components/Textbox';
+import Form from '../components/Form';
+// import Button from '../components/Button/index';
+
+const validation = values => {
+  const errors = {};
+  if (!values.username) {
+    errors.username = 'Username is Required';
+  }
+  if (!values.password) {
+    errors.password = 'Required';
+  } else if (values.password.length < 3) {
+    errors.password = 'Min 3 Char require';
+  } else if (values.password.length > 12) {
+    errors.password = 'Max 12 Char require';
+  }
+  return errors;
+};
+
+const productValidation = values => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = 'name is Required';
+  }
+  if (!values.price) {
+    errors.price = 'Required';
+  }
+  return errors;
+};
+
+const fields = [
+  {
+    name: 'username',
+    value: '',
+    component: Textbox,
+    label: 'Username',
+    placeholder: 'Username',
+  },
+  {
+    name: 'password',
+    value: '',
+    component: Textbox,
+    label: 'Password',
+    placeholder: 'Password',
+    type: 'password',
+  },
+  {
+    name: 'gender',
+    value: '',
+    component: Textbox,
+    label: 'Gender',
+    placeholder: 'Gender',
+  },
+];
+
+const productFields = [
+  {
+    name: 'name',
+    value: '',
+    component: Textbox,
+    label: 'Product Name',
+    placeholder: 'Product Name',
+  },
+  {
+    name: 'price',
+    value: '',
+    component: Textbox,
+    label: 'Product Price',
+    placeholder: 'Product Price',
+  },
+];
 
 export default class Login extends PureComponent {
-  state = {
-    user: {
-      username: '',
-      password: '',
-    },
-    error: {},
-  };
-
-  onTextChange = e => {
-    const { user } = this.state;
-    this.setState(
-      { user: { ...user, [e.target.name]: e.target.value } },
-      () => {
-        this.setState({ error: {} });
-      },
-    );
-  };
-
-  submit = e => {
-    e.preventDefault();
-    const { user } = this.state;
-    const error = {};
-    if (!user.username) {
-      error.username = 'UserName required';
-    }
-    if (!user.password) {
-      error.password = 'Password required';
-    }
-    this.setState({ error });
-  };
-
   render() {
-    const { user, error } = this.state;
-    console.warn('error', error);
     return (
       <div
         style={{
@@ -47,36 +84,21 @@ export default class Login extends PureComponent {
           height: '100vh',
         }}
       >
-        <form
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            padding: 20,
+        <Form
+          fields={fields}
+          validation={validation}
+          onSubmit={(values, actions) => {
+            console.log(values);
           }}
-          onSubmit={this.submit}
-          noValidate
-        >
-          <Textbox
-            name="username"
-            label="Username"
-            placeholder="Username"
-            value={user.username}
-            onChange={this.onTextChange}
-            error={error.username}
-          />
-          <Textbox
-            name="password"
-            label="Password"
-            placeholder="Password"
-            type="password"
-            value={user.password}
-            onChange={this.onTextChange}
-            error={error.password}
-          />
-          <Button disable type="submit">
-            Login
-          </Button>
-        </form>
+        />
+
+        <Form
+          fields={productFields}
+          validation={productValidation}
+          onSubmit={(values, actions) => {
+            console.log(values);
+          }}
+        />
       </div>
     );
   }

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "formik": "^1.5.8",
     "prop-types": "^15.7.2",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
@@ -15,7 +16,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --debug src/",
-    "lint:fix": "eslint --debug src/ --fix"
+    "lint:fix": "eslint --debug src/ --fix",
+    "prettier": "prettier --write src/**/*.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,7 +35,7 @@
     ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
+    "babel-eslint": "10.0.3",
     "eslint": "^6.5.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.3.0",
