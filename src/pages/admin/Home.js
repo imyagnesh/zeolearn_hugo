@@ -2,7 +2,8 @@
 import React from 'react';
 import SubRoutes from '../../components/SubRoutes';
 
-const Home = ({ routes }) => {
+const Home = ({ routes, ...props }) => {
+  console.log(props);
   return (
     <div>
       <h1>Admin Home Page</h1>

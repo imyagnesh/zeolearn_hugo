@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 
 import { Formik, Field } from 'formik';
 
-const index = ({ fields, validation, onSubmit }) => {
+const index = ({ fields, onSubmit }) => {
   return (
     <Formik
       initialValues={fields.reduce((p, c) => ({ ...p, [c.name]: c.value }), {})}
       onSubmit={onSubmit}
-      validate={validation}
     >
-      {({ handleSubmit, isSubmitting }) => {
+      {({ errors, handleSubmit, isSubmitting }) => {
         return (
           <form
             style={{
@@ -21,6 +20,16 @@ const index = ({ fields, validation, onSubmit }) => {
             }}
             onSubmit={handleSubmit}
           >
+            {errors.serverError && (
+              <div
+                style={{
+                  color: 'red',
+                  fontSize: 12,
+                }}
+              >
+                {errors.serverError}
+              </div>
+            )}
             {fields.map(field => (
               <Field key={field.name} {...field} />
             ))}
@@ -37,7 +46,6 @@ const index = ({ fields, validation, onSubmit }) => {
 
 index.propTypes = {
   fields: PropTypes.array.isRequired,
-  validation: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 
